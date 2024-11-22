@@ -16,7 +16,7 @@ A lightweight script for FiveM servers to selectively wipe specific database tab
 ### **1. Add the Resource**
 Add the resource to your `server.cfg` file:
 ```plaintext
-ensure brave-database
+ensure brave-database```
 
 ### **Configure the Script**
 Modify the `config.lua` file:
