@@ -15,22 +15,21 @@ A lightweight script for FiveM servers to selectively wipe specific database tab
 
 ### **1. Add the Resource**
 Add the resource to your `server.cfg` file:
-```
-ensure brave-database
----
+`ensure brave-database`
+
 
 ### **Configure the Script**
 Modify the `config.lua` file:
 
 - **Set the framework**:
-  ```lua
-  Config.Framework = "qbcore" -- Options: "qbcore", "esx", "ox"
+`lua
+  Config.Framework = "qbcore" -- Options: "qbcore", "esx", "ox"`
 
   ## **Define Tables to Wipe**
 Specify the tables you want to wipe in `config.lua`:
-```lua
+`lua
 Config.TablesToWipe = { "players", "phone_messages", "twitter_accounts" }```
-
+`
 
 Run the following command in the server console:
 ```wipe_selected```
