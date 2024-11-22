@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'YourName'
+author 'Brave'
 description 'Selective Database Wipe Script'
 version '1.0.0'
 
