@@ -42,7 +42,8 @@ Config.TablesToWipe = {
 }
 
 -- Webhook Settings
-Config.WebhookURL = "https://discord.com/api/webhooks/1288752585905274910/JCAg_uMk_4L8fbNDU9OBJEcLciEhcWzPoxRScRgRQozlUqkooCB95dMyvRCzdnsjXxWL"
+-- Set your own Discord webhook here. Do NOT commit a real one to a public repo.
+Config.WebhookURL = "" -- e.g. https://discord.com/api/webhooks/xxx/yyy
 Config.WebhookUsername = "WipeBot"
 Config.WebhookAvatar = "https://your-avatar-url.png"
 Config.WebhookMessageTemplate = "Selected tables wiped successfully.\nTotal rows deleted: %d\nDetails:\n%s"
