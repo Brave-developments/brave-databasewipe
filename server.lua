@@ -41,6 +41,8 @@ else
 	print("Invalid framework specified in the configuration.")
 	return
 end
+local ClearPlayers -- forward declaration: all wipe callbacks must call this local function
+
 function ClearDatabase()
 	local totalRowsDeleted=0
 	local deletionDetails=""
@@ -67,7 +69,7 @@ function ClearDatabase()
 					print("All deletion callbacks processed. Initiating webhook dispatch.")
 					DispatchWebhook(totalRowsDeleted,deletionDetails,function()
 						print("Webhook dispatched. Now clearing players.")
-						TriggerEvent('Maintenance:clearPlayers')
+						ClearPlayers()
 					end)
 				end
 			end
@@ -94,7 +96,7 @@ function ClearDatabase()
 					print("All deletion callbacks processed. Initiating webhook dispatch.")
 					DispatchWebhook(totalRowsDeleted,deletionDetails,function()
 						print("Webhook dispatched. Now clearing players.")
-						TriggerEvent('Maintenance:clearPlayers')
+						ClearPlayers()
 					end)
 				end
 			end)
@@ -106,7 +108,7 @@ function ClearDatabase()
 				print("All deletion callbacks processed. Initiating webhook dispatch.")
 				DispatchWebhook(totalRowsDeleted,deletionDetails,function()
 					print("Webhook dispatched. Now clearing players.")
-					TriggerEvent('Maintenance:clearPlayers')
+					ClearPlayers()
 				end)
 			end
 		end
@@ -116,6 +118,11 @@ function DispatchWebhook(totalRows,details,cb)
 	local message=string.format(Config.WebhookMessageTemplate,totalRows,details)
 	print("Sending webhook with message:")
 	print(message)
+	if not Config.WebhookURL or Config.WebhookURL=="" then
+		print("No webhook URL configured, skipping webhook.")
+		if cb then cb() end
+		return
+	end
 	PerformHttpRequest(Config.WebhookURL,function(statusCode,responseText,headers)
 		if statusCode==200 then
 			print("Webhook sent successfully.")
@@ -125,8 +132,8 @@ function DispatchWebhook(totalRows,details,cb)
 		if cb then cb() end
 	end,'POST',json.encode({username=Config.WebhookUsername,avatar_url=Config.WebhookAvatar,content=message,embeds={}}),{['Content-Type']='application/json'})
 end
-RegisterNetEvent('Maintenance:clearPlayers',function()
+ClearPlayers = function()
 	local players=GetPlayers()
 	for _,playerId in ipairs(players) do DropPlayer(playerId,Config.KickMessage) end
 	SetTimeout(6000,function() StopResource(GetCurrentResourceName()) end)
-end)
+end
