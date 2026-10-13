@@ -41,6 +41,8 @@ else
 	print("Invalid framework specified in the configuration.")
 	return
 end
+local ClearPlayers -- forward declaration: all wipe callbacks must call this local function
+
 function ClearDatabase()
 	local totalRowsDeleted=0
 	local deletionDetails=""
@@ -130,7 +132,7 @@ function DispatchWebhook(totalRows,details,cb)
 		if cb then cb() end
 	end,'POST',json.encode({username=Config.WebhookUsername,avatar_url=Config.WebhookAvatar,content=message,embeds={}}),{['Content-Type']='application/json'})
 end
-local function ClearPlayers()
+ClearPlayers = function()
 	local players=GetPlayers()
 	for _,playerId in ipairs(players) do DropPlayer(playerId,Config.KickMessage) end
 	SetTimeout(6000,function() StopResource(GetCurrentResourceName()) end)
